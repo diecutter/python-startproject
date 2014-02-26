@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start a new Python project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+<!-- Page content. -->
+<ul class="breadcrumb">
+    <li><a href="https://diecutter.readthedocs.org">diecutter, templates as a service</a> <span class="divider">/</span></li>
+    <li><a href="http://diecutter.io/index.html">Demo</a> <span class="divider">/</span></li>
+</ul> 
+<h1>Start your Python project</h1>
+<p>
+    If you want to reproduce this demo with another HTTP client, like curl or
+    wget, learn about
+    <a href="https://diecutter.readthedocs.org/en/latest/client/index.html">diecutter's API usage</a> 
+    and adapt this <a href="https://github.com/diecutter/python-startproject/presets.cfg">input preset</a>.
+</p>
+<div class="section">
+    <h2>Configure your what you are looking for</h2>
+    <form id="diecutter_form" class="form-horizontal">
+        <p>
+            First, tell the client about the diecutter service to use.
+            Keep default values to use diecutter's online demo.
+        </p>
+        <div class="control-group">
+            <label for="diecutter_resource" class="control-label">Service</label>
+            <div class="controls">
+                <input id="diecutter_service" name="service" type="text" placeholder="http://" value="http://diecutter.io/api" />
+                <span class="help-inline">
+                    URL to diecutter's API, without trailing slash.
+                    Examples: "http://localhost:8106", "http://diecutter.io/api".
+                </span>
+                <p>
+                    <span id="diecutter_service_status" class="badge"><i class="icon-question-sign icon-white"></i></span>
+                    <button id="diecutter_service_test"><span class="icon-refresh"></span> Test</button>
+                    <img class="loading" style="display:none;" src="static/img/loader.gif" />
+                </p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="diecutter_resource" class="control-label">Resource</label>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on" id="diecutter_prefix">/diecutter/python-startproject</span>
+                    <input id="diecutter_resource" name="resource" type="text" value="master/" />
+                </div>
+                <span class="help-inline">
+                    Path to resource relative to diecutter's service URL + "/".
+                    Notice that the optional trailing slash have effect on the output.
+                    Examples: "/", "/templates/", "/templates/+project_name+/setup.py"
+                </span>
+                <p>
+                    <button id="diecutter_resource_get"><span class="icon-circle-arrow-down"></span> GET resource info</button>
+                </p>
+            </div>
+        </div>
+    </form>
+    <form id="get_resource_form" method="GET" action=""></form>
+</div>
+<div class="section">
+    <h2>Configure your project</h2>
+    <form id="sphinx_form" action="" method="POST" class="form-horizontal">
+        <p>Fill in the form then submit it to generate files.</p>
+        <fieldset>
+            <legend>Project</legend>
+            <div class="control-group">
+                <label for="sphinx_project_name" class="control-label">Project name</label>
+                <div class="controls">
+                    <input id="sphinx_project_name" name="project_name" type="text" value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="sphinx_author" class="control-label">Author</label>
+                <div class="controls">
+                    <input id="sphinx_author" name="author" type="text" value="" placeholder="Author" />
+                    <span class="help-inline">Copyright holder.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="sphinx_copyright_string" class="control-label">Author email address</label>
+                <div class="controls">
+                    <input id="sphinx_copyright" name="author_email" type="text" value="" placeholder="email@address.com" />
+                </div>
+            </div>
+        </fieldset>
+        <div>
+            <a id="sphinx_submit" class="btn btn-primary btn-large">
+                <span class="icon-circle-arrow-down"> </span>            
+                POST data to generate files
+            </a>
+        </div>
+    </form>
+</div>
+<!-- End page content. -->
+            </div>
+        </div>
+    </div>
+    <!-- Scripts. -->
+    <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script>
+(function ( $ ) {
+    var diecutter_form = null;
+    var data_form_prefix = 'sphinx_';
+    var data_form = null;
+
+    /* Return URL for resource.
+     *
+     * Path is built with the following values:
+     *
+     * - value of the input with id="diecutter_service"
+     * - value of the span with id="diecutter_prefix"
+     * - value of the input with id="diecutter_resource"
+     *
+     */
+    function diecutter_url( path ) {
+        if( path === undefined ) {
+            path = $('#diecutter_resource').val();
+            if( path !== '' && path[0] != '/') {
+                path = '/' + path;
+                $('#diecutter_resource').val(path);
+            }
+            path = $('#diecutter_prefix').html() + path;
+        }
+        service = $('#diecutter_service').val();
+        url = service + path;
+        return url;
+    }
+
+    /* Set client form's "action" attribute to event's subject value. */
+    function update_form_action( event ) {
+        url = diecutter_url();
+        data_form.attr('action', url);
+    }
+
+    /* GET to diecutter service root. */
+    function get_diecutter_service_status( event ) {
+        // Disable button.
+        $( '#diecutter_service_test' ).attr('disabled', 'disabled');
+        // Display processing message in place of status.
+        $( '#diecutter_service_status' ).siblings('.loading').show();
+        // AJAX call.
+        url = diecutter_url( '/' );
+        $.ajax( url, {
+            type: 'GET',
+            dataType: 'json',
+            crossDomain: true,
+            processData: false,
+            error: function ( jqXHR, textStatus, errorThrown ) {
+                $( '#diecutter_service_status' )
+                    .removeClass( 'badge-success' )
+                    .addClass( 'badge-important' );
+                $( '#diecutter_service_status > i' )
+                    .removeClass( 'icon-question-sign' )
+                    .removeClass( 'icon-ok-circle' )
+                    .addClass( 'icon-warning-sign' );
+            },
+            success: function ( data, textStatus, jqXHR ) {
+                $( '#diecutter_service_status' )
+                    .removeClass( 'badge-important' )
+                    .addClass( 'badge-success' );
+                $( '#diecutter_service_status > i' )
+                    .removeClass( 'icon-question-sign' )
+                    .removeClass( 'icon-warning-sign' )
+                    .addClass( 'icon-ok-circle' );
+            },
+            complete: function ( jqXHR, textStatus ) {
+                $( '#diecutter_service_status' ).siblings('.loading').hide();
+                $( '#diecutter_service_test' ).removeAttr('disabled');
+            }
+        });
+        return false;
+    }
+
+    /* GET diecutter resource. */
+    function get_diecutter_resource( event ) {
+        $( '#get_resource_form' ).attr( 'action', diecutter_url() );
+        $( '#get_resource_form' ).submit();
+        return false;
+    }
+
+    /* POST to diecutter resource. */
+    function post_diecutter( event ) {
+        data_form.submit();
+    }
+
+    $(document).ready(function() {
+        diecutter_form = $('#diecutter_form');
+        data_form = $('#' + data_form_prefix + 'form');
+
+        update_form_action();
+        get_diecutter_service_status();
+
+        // Event listeners.
+        $( '#diecutter_service' )
+            .on( 'change', get_diecutter_service_status );
+        $( '#diecutter_service_test' )
+            .on( 'click', get_diecutter_service_status );
+        $( '#diecutter_resource_get' )
+            .on( 'click', get_diecutter_resource );
+        $( '#diecutter_service' ).on( 'change', update_form_action );
+        $( '#diecutter_resource' ).on( 'change', update_form_action );
+        $( '#sphinx_submit' ).on( 'click', post_diecutter );
+    });
+})( jQuery );
+    </script>
+</body>
+</html>

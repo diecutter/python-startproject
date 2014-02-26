@@ -1,0 +1,3 @@
+recursive-include {{ project_name }} *
+global-exclude *.pyc
+include VERSION README.rst CHANGELOG AUTHORS
