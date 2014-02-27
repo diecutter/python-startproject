@@ -1,6 +1,26 @@
+===================
 python-startproject
 ===================
 
-Template to start a new python project with PyCutter (Diecutter / Cookiecutter)
+Start a new python project with Diecutter
 
-To use it use : http://rawgithub.com/diecutter/python-startproject/master/index.html
+
+How to use it?
+==============
+
+With your browser
+-----------------
+
+Fill up the form at http://rawgithub.com/diecutter/python-startproject/master/index.html
+
+
+With curl
+---------
+
+    curl -X POST http://diecutter.io/github/diecutter/python-startproject/master/template/ -d 'project_name=mypythonprojet' > template.tar.gz
+
+
+With wget
+---------
+
+    wget -O template.tar.gz --post-data 'project_name=mypythonprojet' http://diecutter.io/github/diecutter/python-startproject/master/template/
