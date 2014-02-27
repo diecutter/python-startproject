@@ -32,7 +32,7 @@
         <div class="control-group">
             <label for="diecutter_resource" class="control-label">Service</label>
             <div class="controls">
-                <input id="diecutter_service" name="service" type="text" placeholder="http://" value="http://diecutter.io/api" />
+                <input id="diecutter_service" name="service" type="text" placeholder="http://" value="http://diecutter.io/github" />
                 <span class="help-inline">
                     URL to diecutter's API, without trailing slash.
                     Examples: "http://localhost:8106", "http://diecutter.io/api".
@@ -49,12 +49,12 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on" id="diecutter_prefix">/diecutter/python-startproject</span>
-                    <input id="diecutter_resource" name="resource" type="text" value="master/" />
+                    <input id="diecutter_resource" name="resource" type="text" value="master/template/" />
                 </div>
                 <span class="help-inline">
                     Path to resource relative to diecutter's service URL + "/".
                     Notice that the optional trailing slash have effect on the output.
-                    Examples: "/", "/templates/", "/templates/+project_name+/setup.py"
+                    Examples: "/", "/template/", "/template/+project_name+/setup.py"
                 </span>
                 <p>
                     <button id="diecutter_resource_get"><span class="icon-circle-arrow-down"></span> GET resource info</button>
