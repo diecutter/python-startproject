@@ -11,7 +11,7 @@ How to use it?
 With your browser
 -----------------
 
-Fill up the form at http://rawgithub.com/diecutter/python-startproject/master/index.html
+Fill up the form at https://diecutter.alwaysdata.net/rawgithub/diecutter/python-startproject/index.html
 
 
 With curl
