@@ -17,10 +17,10 @@ Fill up the form at https://diecutter.alwaysdata.net/rawgithub/diecutter/python-
 With curl
 ---------
 
-    curl -X POST http://diecutter.io/github/diecutter/python-startproject/master/template/ -d 'project_name=mypythonprojet' > template.tar.gz
+    curl -X POST https://diecutter.alwaysdata.net/github/diecutter/python-startproject/master/template/ -d 'project_name=mypythonprojet' > template.tar.gz
 
 
 With wget
 ---------
 
-    wget -O template.tar.gz --post-data 'project_name=mypythonprojet' http://diecutter.io/github/diecutter/python-startproject/master/template/
+    wget -O template.tar.gz --post-data 'project_name=mypythonprojet' https://diecutter.alwaysdata.net/github/diecutter/python-startproject/master/template/
