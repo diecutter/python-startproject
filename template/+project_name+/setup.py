@@ -21,6 +21,9 @@ setup(
     description="{{ description }}",
     long_description=README,
     classifiers=[
+        {% for python_version in python_versions -%}
+            'Programming Language :: Python :: {{ python_version }}',
+        {% endfor -%}
         # Add your classifiers here from
         # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     ],
