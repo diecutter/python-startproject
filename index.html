@@ -48,8 +48,8 @@
             <label for="diecutter_resource" class="control-label">Resource</label>
             <div class="controls">
                 <div class="input-prepend">
-                    <span class="add-on" id="diecutter_prefix">/diecutter/python-startproject</span>
-                    <input id="diecutter_resource" name="resource" type="text" value="master/template/" />
+                    <span class="add-on" id="diecutter_prefix"></span>
+                    <input id="diecutter_resource" name="resource" type="text" value="/diecutter/python-startproject/master/template/" />
                 </div>
                 <span class="help-inline">
                     Path to resource relative to diecutter's service URL + "/".
@@ -87,6 +87,25 @@
                 <label for="sphinx_copyright_string" class="control-label">Author email address</label>
                 <div class="controls">
                     <input id="sphinx_copyright" name="author_email" type="text" value="" placeholder="email@address.com" />
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Python version</legend>
+            <div class="control-group">
+                <label for="sphinx_python_versions" class="control-label">Python version(s)</label>
+                <div class="controls">
+                    <select id="sphinx_python_versions" name="python_versions" multiple>
+                        <option value="2.5">2.5</option>
+                        <option value="2.6">2.6</option>
+                        <option value="2.7" selected>2.7</option>
+                        <option value="3.1">3.0</option>
+                        <option value="3.1">3.1</option>
+                        <option value="3.2">3.2</option>
+                        <option value="3.3" selected>3.3</option>
+                        <option value="3.4" selected>3.4</option>
+                    </select>
+                    <span class="help-inline">The Python versions for which you provide support. Typically the ones you want to include in your test suites.</span>
                 </div>
             </div>
         </fieldset>
