@@ -11,7 +11,7 @@ def read_relative_file(filename):
         return f.read().strip()
 
 
-README = read_relative_file('README.md')
+README = read_relative_file('README.rst')
 VERSION = read_relative_file('VERSION')
 
 
