@@ -1,45 +1,57 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Python packaging."""
 import os
-from setuptools import find_packages
+import sys
+
 from setuptools import setup
 
 
-def read_relative_file(filename):
-    """Returns contents of the given file, which path is supposed relative
-    to this module."""
-    with open(os.path.join(os.path.dirname(__file__), filename)) as f:
-        return f.read().strip()
+#: Absolute path to directory containing setup.py file.
+here = os.path.abspath(os.path.dirname(__file__))
+#: Boolean, ``True`` if environment is running Python version 2.
+IS_PYTHON2 = sys.version_info[0] == 2
 
 
-README = read_relative_file('README.rst')
-VERSION = read_relative_file('VERSION')
+NAME = '{{ project_name }}'
+DESCRIPTION = '{{ description }}'
+README = open(os.path.join(here, 'README.rst')).read()
+VERSION = open(os.path.join(here, 'VERSION')).read().strip()
+AUTHOR = u'{{ author|default('') }}'
+EMAIL = '{{ author_email|default('') }}'
+URL = '{{ url|default("") }}'
+CLASSIFIERS = [
+    {% for python_version in python_versions -%}
+        'Programming Language :: Python :: {{ python_version }}',
+    {% endfor -%}
+    # Add your classifiers here from
+    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+]
+KEYWORDS = [
+    '{{ keywords|default('') }}',
+]
+PACKAGES = [NAME.replace('-', '_')]
+REQUIREMENTS = [
+    'setuptools',
+]
+ENTRY_POINTS = {}
 
 
-setup(
-    name='{{ project_name }}',
-    version=VERSION,
-    description="{{ description }}",
-    long_description=README,
-    classifiers=[
-        {% for python_version in python_versions -%}
-            'Programming Language :: Python :: {{ python_version }}',
-        {% endfor -%}
-        # Add your classifiers here from
-        # https://pypi.python.org/pypi?%3Aaction=list_classifiers
-    ],
-    keywords='{{ keywords|default('') }}',
-    author='{{ author|default('') }}',
-    author_email='{{ author_email|default('') }}',
-    url='{{ url|default("http://www.github.com/organisation/project_name") }}',
-    packages=find_packages(exclude=[]),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=[
-        "setuptools",
-    ],
-    entry_points={
-        # 'console_scripts': [
-        #     '{{ project_name }} = {{ project_name }}:main'
-        # ],
-    }
-)
+if __name__ == '__main__':  # Do not run setup() when we import this module.
+    setup(
+        name=NAME,
+        version=VERSION,
+        description=DESCRIPTION,
+        long_description=README,
+        classifiers=CLASSIFIERS,
+        keywords=' '.join(KEYWORDS),
+        author=AUTHOR,
+        author_email=EMAIL,
+        url=URL,
+        license='BSD',
+        packages=PACKAGES,
+        include_package_data=True,
+        zip_safe=False,
+        install_requires=REQUIREMENTS,
+        entry_points=ENTRY_POINTS,
+    )
