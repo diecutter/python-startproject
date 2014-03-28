@@ -5,6 +5,20 @@ import os
 import sys
 
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
+
+
+class Tox(TestCommand):
+    """Test command that runs tox."""
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import tox  # import here, cause outside the eggs aren't loaded.
+        errno = tox.cmdline(self.test_args)
+        sys.exit(errno)
 
 
 #: Absolute path to directory containing setup.py file.
@@ -19,6 +33,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 VERSION = open(os.path.join(here, 'VERSION')).read().strip()
 AUTHOR = u'{{ author|default('') }}'
 EMAIL = '{{ author_email|default('') }}'
+LICENSE = ''
 URL = '{{ url|default("") }}'
 CLASSIFIERS = [
     {% for python_version in python_versions -%}
@@ -35,6 +50,11 @@ REQUIREMENTS = [
     'setuptools',
 ]
 ENTRY_POINTS = {}
+TEST_REQUIREMENTS = ['tox']
+CMDCLASS = {'test': Tox}
+SETUP_REQUIREMENTS = [
+    'setuptools'
+]
 
 
 if __name__ == '__main__':  # Do not run setup() when we import this module.
@@ -48,10 +68,13 @@ if __name__ == '__main__':  # Do not run setup() when we import this module.
         author=AUTHOR,
         author_email=EMAIL,
         url=URL,
-        license='BSD',
+        license=LICENSE,
         packages=PACKAGES,
         include_package_data=True,
         zip_safe=False,
         install_requires=REQUIREMENTS,
         entry_points=ENTRY_POINTS,
+        tests_require=TEST_REQUIREMENTS,
+        cmdclass=CMDCLASS,
+        setup_requires=SETUP_REQUIREMENTS,
     )
