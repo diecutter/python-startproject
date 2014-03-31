@@ -5,20 +5,6 @@ import os
 import sys
 
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
-
-
-class Tox(TestCommand):
-    """Test command that runs tox."""
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        import tox  # import here, cause outside the eggs aren't loaded.
-        errno = tox.cmdline(self.test_args)
-        sys.exit(errno)
 
 
 #: Absolute path to directory containing setup.py file.
@@ -50,11 +36,33 @@ REQUIREMENTS = [
     'setuptools',
 ]
 ENTRY_POINTS = {}
-TEST_REQUIREMENTS = ['tox']
-CMDCLASS = {'test': Tox}
+TEST_REQUIREMENTS = []
+CMDCLASS = {}
 SETUP_REQUIREMENTS = [
     'setuptools'
 ]
+
+
+{% if with_tox|default(True) -%}
+# Tox integration.
+from setuptools.command.test import test as TestCommand
+
+class Tox(TestCommand):
+    """Test command that runs tox."""
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import tox  # import here, cause outside the eggs aren't loaded.
+        errno = tox.cmdline(self.test_args)
+        sys.exit(errno)
+
+
+TEST_REQUIREMENTS.append('tox')
+CMDCLASS['test'] = Tox
+{%- endif %}
 
 
 if __name__ == '__main__':  # Do not run setup() when we import this module.
