@@ -1,0 +1,12 @@
+language: python
+env:
+  {% if with_tox -%}
+  {% for version in python_versions %}- TOXENV=py{{ version.replace('.', '') }}
+  {% endfor -%}
+  - TOXENV=flake8
+  - TOXENV=readme
+  {%- endif %}
+install:
+  - make develop
+script:
+  - make test
