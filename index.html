@@ -23,48 +23,6 @@
     and adapt this <a href="https://github.com/diecutter/python-startproject/presets.cfg">input preset</a>.
 </p>
 <div class="section">
-    <h2>Configure your what you are looking for</h2>
-    <form id="diecutter_form" class="form-horizontal">
-        <p>
-            First, tell the client about the diecutter service to use.
-            Keep default values to use diecutter's online demo.
-        </p>
-        <div class="control-group">
-            <label for="diecutter_resource" class="control-label">Service</label>
-            <div class="controls">
-                <input id="diecutter_service" name="service" type="text" placeholder="http://" value="https://diecutter.alwaysdata.net/github" />
-                <span class="help-inline">
-                    URL to diecutter's API, without trailing slash.
-                    Examples: "http://localhost:8106", "https://diecutter.alwaysdata.net/api".
-                </span>
-                <p>
-                    <span id="diecutter_service_status" class="badge"><i class="icon-question-sign icon-white"></i></span>
-                    <button id="diecutter_service_test"><span class="icon-refresh"></span> Test</button>
-                    <img class="loading" style="display:none;" src="//diecutter.alwaysdata.net/static/img/loader.gif" />
-                </p>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="diecutter_resource" class="control-label">Resource</label>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on" id="diecutter_prefix"></span>
-                    <input id="diecutter_resource" name="resource" type="text" value="/diecutter/python-startproject/master/template/" />
-                </div>
-                <span class="help-inline">
-                    Path to resource relative to diecutter's service URL + "/".
-                    Notice that the optional trailing slash have effect on the output.
-                    Examples: "/", "/template/", "/template/+project_name+/setup.py"
-                </span>
-                <p>
-                    <button id="diecutter_resource_get"><span class="icon-circle-arrow-down"></span> GET resource info</button>
-                </p>
-            </div>
-        </div>
-    </form>
-    <form id="get_resource_form" method="GET" action=""></form>
-</div>
-<div class="section">
     <h2>Configure your project</h2>
     <form id="sphinx_form" action="" method="POST" class="form-horizontal">
         <p>Fill in the form then submit it to generate files.</p>
@@ -126,6 +84,48 @@
             </a>
         </div>
     </form>
+</div>
+<div class="section">
+    <h2>Configure your what you are looking for</h2>
+    <form id="diecutter_form" class="form-horizontal">
+        <p>
+            First, tell the client about the diecutter service to use.
+            Keep default values to use diecutter's online demo.
+        </p>
+        <div class="control-group">
+            <label for="diecutter_resource" class="control-label">Service</label>
+            <div class="controls">
+                <input id="diecutter_service" name="service" type="text" placeholder="http://" value="https://diecutter.alwaysdata.net/github" />
+                <span class="help-inline">
+                    URL to diecutter's API, without trailing slash.
+                    Examples: "http://localhost:8106", "https://diecutter.alwaysdata.net/api".
+                </span>
+                <p>
+                    <span id="diecutter_service_status" class="badge"><i class="icon-question-sign icon-white"></i></span>
+                    <button id="diecutter_service_test"><span class="icon-refresh"></span> Test</button>
+                    <img class="loading" style="display:none;" src="//diecutter.alwaysdata.net/static/img/loader.gif" />
+                </p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="diecutter_resource" class="control-label">Resource</label>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on" id="diecutter_prefix"></span>
+                    <input id="diecutter_resource" name="resource" type="text" value="/diecutter/python-startproject/master/template/" />
+                </div>
+                <span class="help-inline">
+                    Path to resource relative to diecutter's service URL + "/".
+                    Notice that the optional trailing slash have effect on the output.
+                    Examples: "/", "/template/", "/template/+project_name+/setup.py"
+                </span>
+                <p>
+                    <button id="diecutter_resource_get"><span class="icon-circle-arrow-down"></span> GET resource info</button>
+                </p>
+            </div>
+        </div>
+    </form>
+    <form id="get_resource_form" method="GET" action=""></form>
 </div>
 <!-- End page content. -->
             </div>
